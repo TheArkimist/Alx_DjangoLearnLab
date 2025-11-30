@@ -1,8 +1,14 @@
+from django.shortcuts import render
 from rest_framework import serializers
 from .models import Book
 from datetime import datetime
 from .models import Author
-from .serializers import AuthorSerializer
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['id', 'name']
 
 class BookSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(many=True, read_only=True)
@@ -17,8 +23,4 @@ class BookSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Publication year cannot be in the future.")
         return value
 
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = ['id', 'name']
 
